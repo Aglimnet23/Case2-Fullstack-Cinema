@@ -1,6 +1,7 @@
 import React from "react";
 
 const MovieCard = ({ title, description, genre, director, posterUrl }) => {
+  console.log();
   return (
     <>
       <div className="movie-card" style={styles.card}>

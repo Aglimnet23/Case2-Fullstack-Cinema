@@ -1,37 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const SeatSelection = ({ totalSeats }) => {
-  const [bookedSeats, setBookedSeats] = useState([]);
-  const toggleSeat = (seatNumber) => {
-    setBookedSeats((prev) => {
-      if (prev.includes(seatNumber)) {
-        return prev.filter((seat) => seat !== seatNumber);
-      }
-      return [prev, seatNumber];
-    });
-  };
+const SeatSelection = ({ totalSeats, bookedSeats, onSeatToggle }) => {
+  return (
+    <div style={styles.container}>
+      {Array.from({ length: totalSeats }, (_, i) => {
+        const seatNumber = i + 1;
+        const isBooked = bookedSeats.includes(seatNumber);
+        return (
+          <div
+            key={seatNumber}
+            onClick={() => onSeatToggle(seatNumber)}
+            style={{
+              ...styles.seat,
+              backgroundColor: isBooked ? "red" : "green",
+            }}
+          >
+            {seatNumber}
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
-return (
-  <div style={styles.container}>
-    {Array.from({ length: totalSeats }, (_, index) => {
-      const seatNumber = index + 1;
-      const isBooked = bookedSeats.includes(seatNumber);
-      return (
-        <div
-          key={seatNumber}
-          onClick={() => toggleSeat(seatNumber)}
-          style={{
-            ...styles.seat,
-            backgroundColor: isBooked ? "red" : "green",
-          }}
-        >
-          {seatNumber}
-        </div>
-      );
-    })}
-  </div>
-);
 const styles = {
   container: {
     display: "flex",

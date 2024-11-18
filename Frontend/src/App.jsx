@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
-import MovieList from "./components/MovieList";
+import React, { useState, useEffect } from "react";
+import MovieList from "./components/MovieList.jsx";
+import SeatSelection from "./components/SeatSelection.jsx";
 
 const App = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [bookedSeats, setBookedSeats] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -27,6 +30,25 @@ const App = () => {
     fetchMovies();
   }, []);
 
+  const handleMovieSelect = (movie) => {
+    setSelectedMovie(movie);
+    // Load booked seats from local storage when a movie is selected
+    const storedSeats = JSON.parse(localStorage.getItem("bookedSeats")) || [];
+    setBookedSeats(storedSeats);
+  };
+
+  const handleSeatToggle = (seatNumber) => {
+    setBookedSeats((prev) => {
+      const updatedSeats = prev.includes(seatNumber)
+        ? prev.filter((seat) => seat !== seatNumber) // Unbook the seat
+        : [...prev, seatNumber]; // Book the seat
+
+      // Save to local storage
+      localStorage.setItem("bookedSeats", JSON.stringify(updatedSeats));
+      return updatedSeats;
+    });
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -38,7 +60,17 @@ const App = () => {
   return (
     <div style={styles.app}>
       <h1>Movie List</h1>
-      <MovieList movies={movies} />
+      <MovieList movies={movies} onMovieSelect={handleMovieSelect} />
+      {selectedMovie && (
+        <>
+          <h2>Selected Movie: {selectedMovie.title}</h2>
+          <SeatSelection
+            totalSeats={20}
+            bookedSeats={bookedSeats}
+            onSeatToggle={handleSeatToggle}
+          />
+        </>
+      )}
     </div>
   );
 };
