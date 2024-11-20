@@ -1,13 +1,12 @@
 import React from "react";
-import MovieCard from "./MovieCard"; // Adjust the path as necessary
+import MovieCard from "./MovieCard";
 
 const MovieList = ({ movies, onMovieSelect }) => {
   return (
     <div style={styles.container}>
       {movies.map((movie) => {
-        console.log(movie.id); // Log the ID to check uniqueness
+        console.log(movie.id);
         return (
-          // Return the JSX
           <div
             key={movie.id}
             onClick={() => onMovieSelect(movie)}
