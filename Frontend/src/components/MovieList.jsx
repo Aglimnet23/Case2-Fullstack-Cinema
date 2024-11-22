@@ -4,6 +4,7 @@ import MovieCard from "./MovieCard";
 const MovieList = ({ movies, onMovieSelect }) => {
   return (
     <div style={styles.container}>
+      {/* Mappar genom movies array och skapar ett MovieCard för varje film  */}
       {movies.map((movie) => {
         console.log(movie.id);
         return (

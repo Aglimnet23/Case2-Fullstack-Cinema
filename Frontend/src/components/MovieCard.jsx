@@ -5,8 +5,11 @@ const MovieCard = ({ title, description, genre, director, posterUrl }) => {
   return (
     <>
       <div className="movie-card" style={styles.card}>
+        {/* Visar film affisch */}
         <img src={posterUrl} alt={title} style={styles.image} />
+        {/* Visar filmens titel */}
         <h3>{title}</h3>
+        {/* Visar en kort förklaring av filmen */}
         <p>{description}</p>
         <p>{genre}</p>
         <p>{director}</p>
@@ -14,7 +17,7 @@ const MovieCard = ({ title, description, genre, director, posterUrl }) => {
     </>
   );
 };
-
+// Design Kod
 const styles = {
   card: {
     border: "1px solid #ccc",

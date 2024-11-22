@@ -1,53 +1,59 @@
 import React, { useEffect, useState } from "react";
-
+// SeatSelection-komponenten tillåter användare att välja platser för en film
 const SeatSelection = ({ totalSeats, bookedSeats, onSeatToggle }) => {
+  // useState för att hålla reda på meddelandet för bokning
   const [bookingMessage, setBookingMessage] = useState("");
 
+  // Funktion för att hantera växling av platsval
   const handleSeatToggle = (seatNumber) => {
+    // Kontrollera om platsen redan är bokad
     if (bookedSeats.includes(seatNumber)) {
-      setBookingMessage("This seat is already booked.");
+      setBookingMessage("This seat is already booked."); // Sätter meddelande om att platsen är bokad
       return;
     }
 
-    // Call the passed in onSeatToggle function
+    // Kallar in onSeatToggle-funktionen för att boka platsen
     onSeatToggle(seatNumber);
 
-    // Set the success message
+    // Sätter meddelande om att platsen har bokats framgångsrikt
     setBookingMessage("Your seat has been successfully booked!");
 
-    // Clear the message after a few seconds (optional)
+    // Raderar meddelandet efter några sekunder
     setTimeout(() => {
-      setBookingMessage("");
+      setBookingMessage(""); // Återställer meddelandet till tomt
     }, 3000);
   };
 
   return (
     <div style={styles.container}>
+      {/* Skapar en plats för varje nummer upp till totalSeats */}
       {Array.from({ length: totalSeats }, (_, i) => {
-        const seatNumber = i + 1;
-        const isBooked = bookedSeats.includes(seatNumber);
+        const seatNumber = i + 1; // Platsnumret
+        const isBooked = bookedSeats.includes(seatNumber); // Kollar om platsen är bokad
         return (
           <div
-            key={seatNumber}
-            onClick={() => handleSeatToggle(seatNumber)}
+            key={seatNumber} // Unikt nyckel för varje plats
+            onClick={() => handleSeatToggle(seatNumber)} // Växlar platsval vid klick
             style={{
               ...styles.seat,
-              backgroundColor: isBooked ? "red" : "green",
+              backgroundColor: isBooked ? "red" : "green", // Röd om bokad, grön om ledig
             }}
           >
-            {seatNumber}
+            {seatNumber} {/* Visar platsnumret */}
           </div>
         );
       })}
+      {/* Visar bokningsmeddelande om det finns */}
       {bookingMessage && <div style={styles.message}>{bookingMessage}</div>}
     </div>
   );
 };
 
+// Stilar för komponenten
 const styles = {
   container: {
     display: "flex",
-    flexWrap: "wrap",
+    flexWrap: "wrap", // Gör så att platserna kan brytas till nästa rad
     width: "300px",
   },
   seat: {
@@ -57,14 +63,14 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    cursor: "pointer",
+    cursor: "pointer", // Visar att platsen är klickbar
     color: "white",
-    borderRadius: "4px",
+    borderRadius: "4px", // Rundar hörnen på platserna
   },
   message: {
-    marginTop: "20px",
+    marginTop: "20px", // Utrymme ovanför meddelandet
     color: "black",
-    fontWeight: "bold",
+    fontWeight: "bold", // Gör meddelandet fetstil
   },
 };
 
